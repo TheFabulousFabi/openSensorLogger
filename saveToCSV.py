@@ -15,14 +15,10 @@ def get_data(ip):
 
 def get_entries(dick):
 
-	
-
-
 	if(len(dick.get("Children")) > 0):
 		for i in range(0, len(dick.get("Children"))):
 			get_entries(dick.get("Children")[i])
 	else:
-		print("{}__{}".format(dick.get("Text"),dick.get("Value")))
 		sensorValues.append([dick.get("Text"),dick.get("Value")])
 
 
@@ -36,7 +32,6 @@ def start():
 	
 
 	get_entries(get_data(2))
-	print("sensorValues : {}".format(sensorValues))
 	
 	#exit(0)
 
@@ -54,7 +49,7 @@ def start():
 		temp = []	
 
 
-	print("outConv : {}".format(outConv))
+	#print("outConv : {}".format(outConv))
 	pc_id = "test" #data.get("Children")[0].get("Text")
 	now = datetime.datetime.now()
 	filename = "{}_{}_{}_{}.csv".format(pc_id,now.year,now.month,now.day)
@@ -62,7 +57,7 @@ def start():
 	#CSV header nur schreiben wenn der file neu erstellt wird
 	if(os.path.isfile(filename)):
 		outConv.pop(0)
-		print("loop")
+		#print("loop")
 
 	#fuck this shit
 	with open(filename,"a",newline='') as csvfile:

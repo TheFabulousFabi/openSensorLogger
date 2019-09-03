@@ -37,12 +37,12 @@ def transpose(dick):
 def save(filename, data):
 	#CSV header nur schreiben wenn der file neu erstellt wird
 	if(os.path.isfile(filename)):
-		outConv.pop(0)
+		data.pop(0)
 
 	#fuck this shit
 	with open(filename,"a",newline='') as csvfile:
 		filewriter = csv.writer(csvfile, delimiter=';')
-		filewriter.writerows(outConv)
+		filewriter.writerows(data)
 
 def main():
 

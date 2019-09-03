@@ -55,4 +55,5 @@ def start():
 		filewriter.writerows(outConv)
 	#threading.Timer(1.0, start).start()
 
-start()
+if __name__ == '__main__':
+	start()

@@ -30,12 +30,6 @@ def main():
 	scan_ports(host_ip, port)
 
 
-	adapters = ifaddr.get_adapters()
-
-	for adapter in adapters:
-		print ("IPs of network adapter " + adapter.nice_name)
-		for ip in adapter.ips:
-			print ("   %s/%s" % (ip.ip, ip.network_prefix))
 
 if __name__ == "__main__":
 	main()

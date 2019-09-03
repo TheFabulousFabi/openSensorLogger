@@ -1,35 +1,20 @@
-import socket
-import netifaces
+# This script runs on Python 3
+import socket, threading
 
 
+def TCP_connect(ip, port_number, delay, output):
+    TCPsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    TCPsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    TCPsock.settimeout(delay)
+    try:
+        TCPsock.connect((ip, port_number))
+        output[port_number] = 'Listening'
+    except:
+        output[port_number] = ''
 
 
+output = {}
 
-def get_ip():
-	IP = ""
-	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	try:
-		# doesn't even have to be reachable
-		s.connect(('10.255.255.255', 1))
-		IP = s.getsockname()[0]
-	except:
-		IP = '127.0.0.1'
-	finally:
-		s.close()
+TCP_connect("127.0.0.1",8085,1,output)
 
-	return IP
-
-
-def get_mask():
-    for i in netifaces.interfaces():
-        try:
-            # Address
-            print("IP Address: ", netifaces.ifaddresses(i)[netifaces.AF_INET][0]['addr'])
-            print("Mask: ", netifaces.ifaddresses(i)[netifaces.AF_INET][0]['netmask'])
-            print("Gateway: ", netifaces.gateways()['default'][netifaces.AF_INET][0])
-
-        except:pass
-
-
-print(get_ip())	
-print(get_mask())
+print(output)

@@ -34,19 +34,7 @@ def transpose(dick):
 		temp = []
 	return outConv
 
-def start():
-
-	global sensorValues
-	sensorValues=[]
-	data = get_data(2)
-	get_entries(data)
-	
-	outConv = transpose(sensorValues)
-
-	pc_id = data.get("Children")[0].get("Text")
-	now = datetime.datetime.now()
-	filename = "{}_{}_{}_{}.csv".format(pc_id,now.year,now.month,now.day)
-
+def save(filename, data):
 	#CSV header nur schreiben wenn der file neu erstellt wird
 	if(os.path.isfile(filename)):
 		outConv.pop(0)
@@ -55,7 +43,25 @@ def start():
 	with open(filename,"a",newline='') as csvfile:
 		filewriter = csv.writer(csvfile, delimiter=';')
 		filewriter.writerows(outConv)
+
+def main():
+
+	global sensorValues
+	sensorValues=[]
+
+	data = get_data(2)
+	get_entries(data)
+	
+	outConv = transpose(sensorValues)
+
+	pc_id = data.get("Children")[0].get("Text")
+	now = datetime.datetime.now()
+	filename = "{}_{}_{}_{}.csv".format(pc_id, now.year, now.month, now.day)
+
+	save(filename, outConv)
+
+	
 	#threading.Timer(1.0, start).start()
 
 if __name__ == '__main__':
-	start()
+	main()

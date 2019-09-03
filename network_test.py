@@ -1,5 +1,6 @@
 # This script runs on Python 3
 import socket, threading
+import ifaddr
 
 
 def TCP_connect(ip, port_number, delay, output):
@@ -17,7 +18,6 @@ def scan_ports(host_ip, port):
 
 	output = {}         # For printing purposes
 
-
 	print("Scanning Port:{}".format(port))
 
 	TCP_connect(host_ip, port, 1, output)
@@ -25,9 +25,17 @@ def scan_ports(host_ip, port):
 	print(output)
 
 def main():
-    host_ip = input("Enter host IP: ")
-    port = int(input("Port to Scan: "))   
-    scan_ports(host_ip, port)
+	host_ip = "127.0.0.1" #input("Enter host IP: ")
+	port = 8085 #int(input("Port to Scan: "))   
+	scan_ports(host_ip, port)
+
+
+	adapters = ifaddr.get_adapters()
+
+	for adapter in adapters:
+		print ("IPs of network adapter " + adapter.nice_name)
+		for ip in adapter.ips:
+			print ("   %s/%s" % (ip.ip, ip.network_prefix))
 
 if __name__ == "__main__":
-    main()
+	main()

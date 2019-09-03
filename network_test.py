@@ -13,8 +13,21 @@ def TCP_connect(ip, port_number, delay, output):
         output[port_number] = ''
 
 
-output = {}
+def scan_ports(host_ip, port):
 
-TCP_connect("127.0.0.1",8085,1,output)
+	output = {}         # For printing purposes
 
-print(output)
+
+	print("Scanning Port:{}".format(port))
+
+	TCP_connect(host_ip, port, 1, output)
+
+	print(output)
+
+def main():
+    host_ip = input("Enter host IP: ")
+    port = int(input("Port to Scan: "))   
+    scan_ports(host_ip, port)
+
+if __name__ == "__main__":
+    main()

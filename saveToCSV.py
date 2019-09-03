@@ -5,29 +5,23 @@ import datetime
 import threading
 
 def get_data(ip):
-
 	#get the Data
 	url = urllib.request.urlopen('http://127.0.0.1:8085/data.json')
 	return json.loads(url.read().decode())
 
 def get_entries(dick):
+	child = dick.get("Children")
 
-	if(len(dick.get("Children")) > 0):
-		for i in range(0, len(dick.get("Children"))):
-			get_entries(dick.get("Children")[i])
+	if(len(child) > 0):
+		for i in range(0, len(child)):
+			get_entries(child[i])
 	else:
-		sensorValues.append([dick.get("Text"),dick.get("Value")])
+		if(dick.get("Value") != ""):
+			sensorValues.append([dick.get("Text"),dick.get("Value")])
 
-def start():
-
-	global sensorValues
-	sensorValues=[]
-	outConv =[]
+def transpose(dick):
 	temp = []	
-
-	get_entries(get_data(2))
-
-	sensorValues.pop(0)
+	outConv =[]
 	# Transponieren 
 	for i in range(len(sensorValues[0])):
 		for j in range(len(sensorValues)):
@@ -38,10 +32,19 @@ def start():
 			temp.append(sensorValues[j][i])
 
 		outConv.append(temp)
-		temp = []	
+		temp = []
+	return outConv
 
-	#print("outConv : {}".format(outConv))
-	pc_id = "test" #data.get("Children")[0].get("Text")
+def start():
+
+	global sensorValues
+	sensorValues=[]
+	data = get_data(2)
+	get_entries(data)
+	
+	outConv = transpose(sensorValues)
+
+	pc_id = data.get("Children")[0].get("Text")
 	now = datetime.datetime.now()
 	filename = "{}_{}_{}_{}.csv".format(pc_id,now.year,now.month,now.day)
 

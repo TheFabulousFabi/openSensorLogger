@@ -30,7 +30,6 @@ def transpose(dick):
 				temp.append(x.group())
 				continue
 			temp.append(sensorValues[j][i])
-
 		outConv.append(temp)
 		temp = []
 	return outConv
